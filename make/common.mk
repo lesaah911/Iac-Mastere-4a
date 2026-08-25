@@ -27,3 +27,8 @@ help: ## shows this help
 	@grep -hE "^[a-zA-Z0-9_.-]+:.*?## .*$$" $(MAKEFILE_LIST) | sort | \
 		awk 'BEGIN {FS=":.*?## "}{printf "$(INFO_COLOR)%-20s$(RESET_COLOR)%s\n", $$1, $$2}'
 	@echo -e "\n$(UI_COLOR)==================END OF MENU================$(RESET_COLOR)\n"
+
+ENV ?=dev
+INFRA_DIR := $(CURDIR)/infra
+TF_ENV_DIR :=$(INFRA_DIR)/envs/$(ENV)
+ANSI_DIR := ansible

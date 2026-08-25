@@ -1,0 +1,27 @@
+name: TF FORMAT CHECK
+run-name: ${{ github.actor }} is running TF FORMAT CHECK
+on:
+  push:
+    branches:
+      - main
+env:
+  TF_VERSION: "1.15.6"
+permissions:
+  contents: read
+jobs:
+  check-tf-format:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          repository: ${{ github.repository }}
+          fetch-depth: 1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - run: |
+          make tf.fmt.ci
+        continue-on-error: false
