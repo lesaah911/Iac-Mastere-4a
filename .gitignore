@@ -10,4 +10,3 @@ tfplan
 *.tfstate.*
 *.retry
 .ansible
-inventory.ini
