@@ -1,0 +1,5 @@
+---
+nginx_listen_port: 80
+nginx_server_name: "emeric_serv"
+nginx_root: /var/www/html
+nginx_index_files: "index.html index.htm"

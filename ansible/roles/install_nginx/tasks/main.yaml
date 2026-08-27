@@ -1,0 +1,48 @@
+---
+- name: Apt instal nginx
+  become: true # elevation de privi
+  ansible.builtin.apt:
+    state: present
+    name: nginx
+    update_cache: true
+- name: Start the service
+  become: true
+  ansible.builtin.service:
+    state: started
+    name: nginx
+    enabled: true
+    
+- name: Deployer la configuration nginx (Jinja2 + variables defaults)
+  become: true
+  ansible.builtin.template:
+    src: nginx.config.J2
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload nginx
+
+- name: Creer le dossier racine web si besoin
+  become: true
+  ansible.builtin.file:
+    path: "{{ nginx_root }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: "0755"
+
+- name: Deployer la page web (html, css, js)
+  become: true
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ nginx_root }}/{{ item }}"
+    owner: www-data
+    group: www-data
+    mode: "0644"
+  loop:
+    - index.html
+    - style.css
+    - script.js
+# Il manque qqch ici qui dira de changer
+# la configuration de nginx ou d'ajouter des
+# fichiers web ( css js et html )

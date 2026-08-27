@@ -8,3 +8,6 @@ tfplan
 .terraform/
 *.tfstate
 *.tfstate.*
+*.retry
+.ansible
+inventory.ini

@@ -1,0 +1,5 @@
+---
+- name: Configurer Engine-X sur la VM
+  hosts: dev
+  roles:
+    - install_nginx

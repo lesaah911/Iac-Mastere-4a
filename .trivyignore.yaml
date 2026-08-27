@@ -1,0 +1,6 @@
+# AWS-0104 (CRITICAL) : egress security group ouvert a 0.0.0.0/0 sur tous les ports.
+# Volontaire : la VM a besoin d'un acces sortant complet (mises a jour systeme,
+# telechargements de paquets), et le sujet ne demande aucune restriction d'egress.
+misconfigurations:
+  - id: AVD-AWS-0104
+    statement: "Sortie 0.0.0.0/0 assumee et documentee pour la VM du projet Mastere IaC."

@@ -13,7 +13,10 @@ resource "aws_key_pair" "vm_kp" {
 # some optional
 # some mandatory
 resource "aws_instance" "this" {
-
+  #checkov:skip=CKV_AWS_88:IP publique volontaire - necessaire pour que le professeur puisse ping la VM depuis l'exterieur
+  #checkov:skip=CKV_AWS_126:Monitoring detaille desactive volontairement (cout CloudWatch non justifie pour ce projet pedagogique)
+  #checkov:skip=CKV_AWS_135:t2.micro ne supporte pas l'optimisation EBS (limitation materielle du type d'instance)
+  #checkov:skip=CKV2_AWS_41:Aucun role IAM necessaire, la VM n'appelle aucune API AWS
 
   # ================= 🚀 OS  ===============================
   ami = var.instance_ami
@@ -33,6 +36,16 @@ resource "aws_instance" "this" {
 
   # =========  IS IP PUBLIC OR PRIVATE ==============================
   associate_public_ip_address = var.has_public_ip
+
+  # =========  SECURITE : IMDSv2 obligatoire ==============================
+  metadata_options {
+    http_tokens = "required"
+  }
+
+  # =========  SECURITE : disque racine chiffre ==============================
+  root_block_device {
+    encrypted = true
+  }
 
   tags = {
     Name = "${local.prefix}-vm"
